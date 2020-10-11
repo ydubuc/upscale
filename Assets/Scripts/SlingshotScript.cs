@@ -3,22 +3,29 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class SlingshotScript : MonoBehaviour {
-    [SerializeField] Rigidbody player = default;
+    [SerializeField] private Rigidbody player = default;
 
-    Vector3 touchOrigin;
-    Vector3 touchEnd;
+    private Animator animator;
+    private Vector3 touchOrigin;
+    private Vector3 touchEnd;
 
-    // Start is called before the first frame update
-    void Start() {
+    private bool isGrounded = true;
 
+    void Awake() {
+        animator = GetComponent<Animator>();
+        animator.SetBool("Grounded", true);
     }
 
-    // Update is called once per frame
     void Update() {
-        ListenForInputs();
+#if UNITY_IOS || UNITY_ANDROID || UNITY_WP8 || UNITY_IPHONE
+            ListenForMobileInput();
+#endif
+#if UNITY_STANDALONE
+		    ListenForStandaloneInput();
+#endif
     }
 
-    void ListenForInputs() {
+    void ListenForMobileInput() {
         if (Input.touchCount < 1) { return; }
 
         Touch touch = Input.touches[0];
@@ -34,6 +41,29 @@ public class SlingshotScript : MonoBehaviour {
             // player.constraints = RigidbodyConstraints.FreezeRotation;
 
             player.AddForce(Vector3.ClampMagnitude(jumpForce, 1100));
+            AnimateJump(true);
         }
+    }
+
+    void ListenForStandaloneInput() {
+        if (Input.GetButtonDown("Fire1")) {
+            touchOrigin = Input.mousePosition;
+        } else if (Input.GetButtonUp("Fire1")) {
+            touchEnd = Input.mousePosition;
+            Vector3 jumpForce = touchOrigin - touchEnd;
+            player.AddForce(Vector3.ClampMagnitude(jumpForce, 1100));
+            AnimateJump(true);
+        }
+    }
+
+    void OnCollisionEnter(Collision collision) {
+        if (collision.gameObject.tag == "Ground") {
+            AnimateJump(false);
+        }
+    }
+
+    void AnimateJump(bool newState) {
+        isGrounded = !newState;
+        animator.SetBool("Grounded", !newState);
     }
 }
