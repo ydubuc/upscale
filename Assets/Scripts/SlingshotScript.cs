@@ -21,7 +21,7 @@ public class SlingshotScript : MonoBehaviour {
             ListenForMobileInput();
 #endif
 #if UNITY_STANDALONE
-		    ListenForStandaloneInput();
+            ListenForStandaloneInput();
 #endif
     }
 
