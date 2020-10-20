@@ -12,7 +12,7 @@ public class PlatformPrefabBehavior : MonoBehaviour {
 
     void Update() {
         MovePlatform();
-        if (transform.position.y <= -10f) {
+        if (transform.position.y <= -15f) {
             gameObject.SetActive(false);
         }
     }

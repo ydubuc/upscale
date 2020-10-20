@@ -17,15 +17,19 @@ public class SlingshotScript : MonoBehaviour {
     }
 
     void Update() {
-#if UNITY_IOS || UNITY_ANDROID || UNITY_WP8 || UNITY_IPHONE
-            ListenForMobileInput();
-#endif
-#if UNITY_STANDALONE
-            ListenForStandaloneInput();
+        RespondToInputs();
+    }
+
+    void RespondToInputs() {
+        if (!isGrounded) { return; }
+#if UNITY_IOS || UNITY_ANDROID
+        RespondToMobileInput();
+#elif UNITY_STANDALONE
+        RespondToStandaloneInput();
 #endif
     }
 
-    void ListenForMobileInput() {
+    void RespondToMobileInput() {
         if (Input.touchCount < 1) { return; }
 
         Touch touch = Input.touches[0];
@@ -45,7 +49,7 @@ public class SlingshotScript : MonoBehaviour {
         }
     }
 
-    void ListenForStandaloneInput() {
+    void RespondToStandaloneInput() {
         if (Input.GetButtonDown("Fire1")) {
             touchOrigin = Input.mousePosition;
         } else if (Input.GetButtonUp("Fire1")) {
@@ -57,9 +61,8 @@ public class SlingshotScript : MonoBehaviour {
     }
 
     void OnCollisionEnter(Collision collision) {
-        if (collision.gameObject.tag == "Ground") {
-            AnimateJump(false);
-        }
+        if (collision.gameObject.tag != "Ground") { return; }
+        AnimateJump(false);
     }
 
     void AnimateJump(bool newState) {

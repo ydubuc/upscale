@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour {
     [SerializeField] GameObject platformPrefab = default;
-    GameObject[] platforms = new GameObject[10];
+    [SerializeField] GameObject genesisPlatformPrefab = default;
+    GameObject[] platforms = new GameObject[8];
     [SerializeField] float spawnHeight = 15f;
     [SerializeField] float minSpawnRate = 2f;
     [SerializeField] float maxSpawnRate = 5f;
@@ -21,6 +22,8 @@ public class GameManager : MonoBehaviour {
             Vector3 spawnPosition = new Vector3(0f, -spawnHeight, 0f);
             platforms[i] = Instantiate(platformPrefab, spawnPosition, Quaternion.identity);
         }
+
+        Instantiate(genesisPlatformPrefab, new Vector3(0f, 0f, 0f), Quaternion.identity);
     }
 
     void Update() {
