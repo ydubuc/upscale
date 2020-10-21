@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SlingshotScript : MonoBehaviour {
+public class PlayerScript : MonoBehaviour {
     [SerializeField] private Rigidbody player = default;
 
     private Animator animator;
@@ -18,9 +18,10 @@ public class SlingshotScript : MonoBehaviour {
 
     void Update() {
         RespondToInputs();
+        VerifyPlayerPosition();
     }
 
-    void RespondToInputs() {
+    private void RespondToInputs() {
         if (!isGrounded) { return; }
 #if UNITY_IOS || UNITY_ANDROID
         RespondToMobileInput();
@@ -29,7 +30,7 @@ public class SlingshotScript : MonoBehaviour {
 #endif
     }
 
-    void RespondToMobileInput() {
+    private void RespondToMobileInput() {
         if (Input.touchCount < 1) { return; }
 
         Touch touch = Input.touches[0];
@@ -38,35 +39,36 @@ public class SlingshotScript : MonoBehaviour {
             touchOrigin = touch.position;
         } else if (touch.phase == TouchPhase.Ended && touchOrigin.x >= Mathf.Epsilon) {
             touchEnd = touch.position;
-            Vector3 jumpForce = touchOrigin - touchEnd;
-
-            // transform.parent = null;
-            // player.constraints = RigidbodyConstraints.None;
-            // player.constraints = RigidbodyConstraints.FreezeRotation;
-
-            player.AddForce(Vector3.ClampMagnitude(jumpForce, 1100));
-            AnimateJump(true);
+            Jump(touchOrigin - touchEnd);
         }
     }
 
-    void RespondToStandaloneInput() {
+    private void RespondToStandaloneInput() {
         if (Input.GetButtonDown("Fire1")) {
             touchOrigin = Input.mousePosition;
         } else if (Input.GetButtonUp("Fire1")) {
             touchEnd = Input.mousePosition;
-            Vector3 jumpForce = touchOrigin - touchEnd;
-            player.AddForce(Vector3.ClampMagnitude(jumpForce, 1100));
-            AnimateJump(true);
+            Jump(touchOrigin - touchEnd);
         }
     }
 
-    void OnCollisionEnter(Collision collision) {
+    private void Jump(Vector3 force) {
+        player.AddForce(Vector3.ClampMagnitude(force, 1100));
+        AnimateJump(true);
+    }
+
+    private void AnimateJump(bool newState) {
+        isGrounded = !newState;
+        animator.SetBool("Grounded", !newState);
+    }
+
+    private void OnCollisionEnter(Collision collision) {
         if (collision.gameObject.tag != "Ground") { return; }
         AnimateJump(false);
     }
 
-    void AnimateJump(bool newState) {
-        isGrounded = !newState;
-        animator.SetBool("Grounded", !newState);
+    private void VerifyPlayerPosition() {
+        if (transform.position.y > -15f) { return; }
+        gameObject.SetActive(false);
     }
 }

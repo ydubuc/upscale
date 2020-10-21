@@ -317,7 +317,7 @@ Light:
   serializedVersion: 10
   m_Type: 1
   m_Shape: 0
-  m_Color: {r: 1, g: 0.97177505, b: 0.9103774, a: 1}
+  m_Color: {r: 1, g: 0.9625301, b: 0.9009434, a: 1}
   m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
@@ -374,13 +374,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 705507993}
-  m_LocalRotation: {x: 0.37940946, y: -0.120590515, z: 0.049950223, w: 0.9159756}
+  m_LocalRotation: {x: 0.3553021, y: -0.12185675, z: 0.046776425, w: 0.92559355}
   m_LocalPosition: {x: 0, y: 15, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 45, y: -15, z: 0}
+  m_LocalEulerAnglesHint: {x: 42, y: -15, z: 0}
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -535,7 +535,8 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8748688856612009363, guid: 0e74cf81e6fd82546b4797f71ceffb81, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 0e74cf81e6fd82546b4797f71ceffb81, type: 3}
 --- !u!1 &1314436524
 GameObject:
@@ -585,7 +586,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1506821362}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d1f609b7dbf7946f5a83c5c7364899c4, type: 3}
+  m_Script: {fileID: 11500000, guid: 81155eac4ca71db49acb01d7e16f081e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1506821367}

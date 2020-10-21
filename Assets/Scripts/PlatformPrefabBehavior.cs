@@ -4,20 +4,23 @@ using UnityEngine;
 
 public class PlatformPrefabBehavior : MonoBehaviour {
     [SerializeField] float platformSpeed = 1.5f;
-    Vector3 platformPosition;
+    private Vector3 speedVector;
 
     void Start() {
-        platformPosition.Set(0f, platformSpeed, 0f);
+        speedVector.Set(0f, platformSpeed, 0f);
     }
 
     void Update() {
         MovePlatform();
-        if (transform.position.y <= -15f) {
-            gameObject.SetActive(false);
-        }
+        VerifyPlatformPosition();
     }
 
-    void MovePlatform() {
-        transform.position -= platformPosition * Time.deltaTime;
+    private void MovePlatform() {
+        transform.position -= speedVector * Time.deltaTime;
+    }
+
+    private void VerifyPlatformPosition() {
+        if (transform.position.y > -15f) { return; }
+        gameObject.SetActive(false);
     }
 }

@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GenesisPlatformPrefabBehavior : MonoBehaviour {
-    float timer = 0f
-    ;
+    private float timer = 0f;
+
     void Update() {
         timer += Time.deltaTime;
-        if (timer >= 5) {
+        if (timer > 5) {
             OnCollisionExit(null);
         }
     }
 
-    void OnCollisionExit(Collision collision) {
+    private void OnCollisionExit(Collision collision) {
         Destroy(this.gameObject);
     }
 }
