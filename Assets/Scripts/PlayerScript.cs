@@ -1,10 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerScript : MonoBehaviour {
     [SerializeField] private Rigidbody player = default;
-
     private Animator animator;
     private Vector3 touchOrigin;
     private Vector3 touchEnd;
@@ -23,6 +23,7 @@ public class PlayerScript : MonoBehaviour {
     private void VerifyPlayerPosition() {
         if (transform.position.y > -15f) { return; }
         gameObject.SetActive(false);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     private void RespondToInputs() {
@@ -41,7 +42,7 @@ public class PlayerScript : MonoBehaviour {
 
         if (touch.phase == TouchPhase.Began) {
             touchOrigin = touch.position;
-        } else if (touch.phase == TouchPhase.Ended && touchOrigin.x >= Mathf.Epsilon) {
+        } else if (touch.phase == TouchPhase.Ended) {
             touchEnd = touch.position;
             Jump(touchOrigin - touchEnd);
         }
@@ -57,10 +58,11 @@ public class PlayerScript : MonoBehaviour {
     }
 
     private void Jump(Vector3 force) {
-        player.AddForce(Vector3.ClampMagnitude(force, 1300));
+        if (force.y < 0f || force.magnitude < 50) { return; }
         transform.parent = null;
         player.constraints = RigidbodyConstraints.None;
         player.constraints = RigidbodyConstraints.FreezeRotation;
+        player.AddForce(Vector3.ClampMagnitude(force, 650));
         AnimateJump(true);
     }
 
@@ -71,9 +73,9 @@ public class PlayerScript : MonoBehaviour {
     }
 
     private void Land(Collider collider) {
-        transform.SetParent(collider.transform);
         player.constraints = RigidbodyConstraints.FreezeAll;
         player.velocity = Vector3.zero;
+        transform.SetParent(collider.transform);
         AnimateJump(false);
     }
 
