@@ -8,7 +8,6 @@ public class PlayerScript : MonoBehaviour {
     private Animator animator;
     private Vector3 touchOrigin;
     private Vector3 touchEnd;
-
     private bool isGrounded = true;
 
     void Awake() {
@@ -17,8 +16,13 @@ public class PlayerScript : MonoBehaviour {
     }
 
     void Update() {
-        RespondToInputs();
         VerifyPlayerPosition();
+        RespondToInputs();
+    }
+
+    private void VerifyPlayerPosition() {
+        if (transform.position.y > -15f) { return; }
+        gameObject.SetActive(false);
     }
 
     private void RespondToInputs() {
@@ -53,22 +57,28 @@ public class PlayerScript : MonoBehaviour {
     }
 
     private void Jump(Vector3 force) {
-        player.AddForce(Vector3.ClampMagnitude(force, 1100));
+        player.AddForce(Vector3.ClampMagnitude(force, 1300));
+        transform.parent = null;
+        player.constraints = RigidbodyConstraints.None;
+        player.constraints = RigidbodyConstraints.FreezeRotation;
         AnimateJump(true);
+    }
+
+    private void OnTriggerEnter(Collider collider) {
+        if (player.velocity.y > Mathf.Epsilon ||
+        collider.gameObject.tag != "Platform") { return; }
+        Land(collider);
+    }
+
+    private void Land(Collider collider) {
+        transform.SetParent(collider.transform);
+        player.constraints = RigidbodyConstraints.FreezeAll;
+        player.velocity = Vector3.zero;
+        AnimateJump(false);
     }
 
     private void AnimateJump(bool newState) {
         isGrounded = !newState;
         animator.SetBool("Grounded", !newState);
-    }
-
-    private void OnCollisionEnter(Collision collision) {
-        if (collision.gameObject.tag != "Ground") { return; }
-        AnimateJump(false);
-    }
-
-    private void VerifyPlayerPosition() {
-        if (transform.position.y > -15f) { return; }
-        gameObject.SetActive(false);
     }
 }

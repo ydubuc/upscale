@@ -530,6 +530,21 @@ PrefabInstance:
       propertyPath: m_Constraints
       value: 120
       objectReference: {fileID: 0}
+    - target: {fileID: 54084939265967506, guid: 0e74cf81e6fd82546b4797f71ceffb81,
+        type: 3}
+      propertyPath: m_Mass
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 54084939265967506, guid: 0e74cf81e6fd82546b4797f71ceffb81,
+        type: 3}
+      propertyPath: m_AngularDrag
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 136606663363984694, guid: 0e74cf81e6fd82546b4797f71ceffb81,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8748688856612009363, guid: 0e74cf81e6fd82546b4797f71ceffb81,
         type: 3}
       propertyPath: m_Enabled
@@ -537,6 +552,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 8748688856612009363, guid: 0e74cf81e6fd82546b4797f71ceffb81, type: 3}
+    - {fileID: 136606663363984694, guid: 0e74cf81e6fd82546b4797f71ceffb81, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 0e74cf81e6fd82546b4797f71ceffb81, type: 3}
 --- !u!1 &1314436524
 GameObject:
@@ -596,6 +612,19 @@ Rigidbody:
     type: 3}
   m_PrefabInstance: {fileID: 996127512}
   m_PrefabAsset: {fileID: 0}
+--- !u!65 &1506821368
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1506821362}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.25, y: 1, z: 0.25}
+  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!1001 &374908598029644113
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -7,7 +7,7 @@ public class GenesisPlatformPrefabBehavior : MonoBehaviour {
 
     void Update() {
         timer += Time.deltaTime;
-        if (timer > 5) {
+        if (timer > 8) {
             OnCollisionExit(null);
         }
     }
