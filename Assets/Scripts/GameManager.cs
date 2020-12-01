@@ -6,6 +6,8 @@ public class GameManager : MonoBehaviour {
     // dependencies
     [SerializeField] Transform player = default;
     [SerializeField] GameObject platformPrefab = default;
+    [SerializeField] GameObject tower1 = default;
+    [SerializeField] GameObject tower2 = default;
 
     // constants
     private float spawnRate = 1f;
@@ -17,12 +19,19 @@ public class GameManager : MonoBehaviour {
 
     // runtime variables
     private GameObject[] platforms = new GameObject[8];
+    
     private float timeSinceLastSpawn = 0f;
     private float spawnHeight = 0f;
     private int nextPlatformIndex = 0;
 
+    private float towerScaleY = 0f;
+    private float nextTowerPosY = 0f;
+    private int nextTowerIndex = 1;
+
     // functions
     void Start() {
+        towerScaleY = tower1.transform.localScale.y;
+        nextTowerPosY = towerScaleY;
         ConfigureLevel();
     }
 
@@ -42,7 +51,16 @@ public class GameManager : MonoBehaviour {
 
     void Update() {
         spawnHeight -= platformSpeed * Time.deltaTime;
+        UpdateTowerPos();
         PoolPlatforms();
+    }
+
+    private void UpdateTowerPos() {
+        if (player.position.y < (nextTowerPosY - towerScaleY)) { return; }
+        GameObject tower = nextTowerIndex == 0 ? tower1 : tower2;
+        nextTowerIndex = nextTowerIndex == 0 ? 1 : 0;
+        tower.transform.position = new Vector3(0f, nextTowerPosY, 0f);
+        nextTowerPosY += towerScaleY;
     }
 
     private void PoolPlatforms() {

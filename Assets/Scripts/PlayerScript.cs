@@ -55,7 +55,7 @@ public class PlayerScript : MonoBehaviour {
     }
 
     private void RespondToInputs() {
-        if (!isGrounded) { return; }
+        // if (!isGrounded) { return; }
 #if UNITY_IOS || UNITY_ANDROID
         RespondToMobileInput();
 #elif UNITY_STANDALONE
@@ -91,21 +91,11 @@ public class PlayerScript : MonoBehaviour {
         player.constraints = RigidbodyConstraints.None;
         player.constraints = RigidbodyConstraints.FreezeRotation;
         player.AddForce(Vector3.ClampMagnitude(force, 650));
-
-        if (force.x > 0) {
-            transform.eulerAngles = new Vector3(
-                transform.eulerAngles.x,
-                90,
-                transform.eulerAngles.z
-            );
-        } else {
-            transform.eulerAngles = new Vector3(
-                transform.eulerAngles.x,
-                -90,
-                transform.eulerAngles.z
-            );
-        }
-
+        transform.eulerAngles = new Vector3(
+            transform.eulerAngles.x,
+            (force.x > 0) ? 90f : -90f,
+            transform.eulerAngles.z
+        );
         audioSource.PlayOneShot(audioClipJump);
         SetJumpAnimation(true);
     }
