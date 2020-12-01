@@ -3,45 +3,59 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour {
+    // dependencies
+    [SerializeField] Transform player = default;
     [SerializeField] GameObject platformPrefab = default;
-    [SerializeField] GameObject genesisPlatformPrefab = default;
+
+    // constants
+    private float spawnRate = 1f;
+    private float minSpawnHeightDiff = 4f;
+    private float maxSpawnHeightDiff = 6f;
+
+    // injected variables
+    [SerializeField] float platformSpeed = 1.5f;
+
+    // runtime variables
     private GameObject[] platforms = new GameObject[8];
-    [SerializeField] float spawnHeight = 15f;
-    [SerializeField] float minSpawnRate = 2f;
-    [SerializeField] float maxSpawnRate = 5f;
-    private float spawnRate = 3f;
-    private float timeSinceLastSpawn = 3f;
+    private float timeSinceLastSpawn = 0f;
+    private float spawnHeight = 0f;
     private int nextPlatformIndex = 0;
 
+    // functions
     void Start() {
-        InstantiatePlatforms();
+        ConfigureLevel();
     }
 
-    private void InstantiatePlatforms() {
+    private void ConfigureLevel() {
+        player.gameObject.SetActive(false);
+
         for (int i = 0; i < platforms.Length; i++) {
-            Vector3 spawnPosition = new Vector3(0f, -spawnHeight, 0f);
+            Vector3 spawnPosition = new Vector3(0f, -30f, 0f);
             platforms[i] = Instantiate(platformPrefab, spawnPosition, Quaternion.identity);
         }
 
-        Instantiate(genesisPlatformPrefab, new Vector3(0f, 0f, 0f), Quaternion.identity);
+        PoolPlatform(0);
+        Vector3 offset = new Vector3(0f, 3f, 0f);
+        player.position = platforms[0].transform.position + offset;
+        player.gameObject.SetActive(true);
     }
 
     void Update() {
+        spawnHeight -= platformSpeed * Time.deltaTime;
         PoolPlatforms();
     }
 
     private void PoolPlatforms() {
         timeSinceLastSpawn += Time.deltaTime;
-        if (timeSinceLastSpawn >= spawnRate) {
-            timeSinceLastSpawn = 0f;
-            PoolPlatform(nextPlatformIndex);
-        }
+        if (timeSinceLastSpawn < spawnRate) { return; }
+        if ((spawnHeight - player.position.y) > 15f) { return; }
+        timeSinceLastSpawn = 0f;
+        PoolPlatform(nextPlatformIndex);
     }
 
     private void PoolPlatform(int index) {
         platforms[index].SetActive(true);
-        platforms[index].transform.position = transform.position + RandomPlatformPosition();
-        spawnRate = Random.Range(minSpawnRate, maxSpawnRate);
+        platforms[index].transform.position = RandomPlatformPosition();
         nextPlatformIndex += 1;
         if (nextPlatformIndex == platforms.Length) {
             nextPlatformIndex = 0;
@@ -49,6 +63,7 @@ public class GameManager : MonoBehaviour {
     }
 
     private Vector3 RandomPlatformPosition() {
+        spawnHeight += Random.Range(minSpawnHeightDiff, maxSpawnHeightDiff);
         return new Vector3(Random.Range(-3.75f, 3.75f), spawnHeight, 0f);
     }
 }

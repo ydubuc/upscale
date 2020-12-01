@@ -3,24 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlatformPrefabBehavior : MonoBehaviour {
-    [SerializeField] float platformSpeed = 1.5f;
-    private Vector3 speedVector;
+    // lateinit constants
+    private Vector3 platformSpeedVector;
 
+    // injected variables
+    [SerializeField] float platformSpeed = 1.5f;
+
+    // functions
     void Start() {
-        speedVector.Set(0f, platformSpeed, 0f);
+        platformSpeedVector.Set(0f, platformSpeed, 0f);
     }
 
     void Update() {
         MovePlatform();
-        VerifyPlatformPosition();
     }
 
     private void MovePlatform() {
-        transform.position -= speedVector * Time.deltaTime;
-    }
-
-    private void VerifyPlatformPosition() {
-        if (transform.position.y > -15f) { return; }
-        gameObject.SetActive(false);
+        transform.position -= platformSpeedVector * Time.deltaTime;
     }
 }

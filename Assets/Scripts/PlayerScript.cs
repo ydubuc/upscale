@@ -4,12 +4,22 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class PlayerScript : MonoBehaviour {
+    // dependencies
     [SerializeField] private Rigidbody player = default;
+
+    // lateinit dependencies
     private Animator animator;
+    
+    // constants
+    private float deactivationPos = 25f;
+
+    // runtime variables
     private Vector3 touchOrigin;
     private Vector3 touchEnd;
+    private float highestPos = 0f;
     private bool isGrounded = true;
-
+    
+    // functions
     void Awake() {
         animator = GetComponent<Animator>();
         animator.SetBool("Grounded", true);
@@ -21,9 +31,13 @@ public class PlayerScript : MonoBehaviour {
     }
 
     private void VerifyPlayerPosition() {
-        if (transform.position.y > -15f) { return; }
-        gameObject.SetActive(false);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        if (transform.position.y > highestPos) {
+            highestPos = transform.position.y;
+        }
+        if (transform.position.y < highestPos - deactivationPos) {
+            gameObject.SetActive(false);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
     }
 
     private void RespondToInputs() {
@@ -63,12 +77,27 @@ public class PlayerScript : MonoBehaviour {
         player.constraints = RigidbodyConstraints.None;
         player.constraints = RigidbodyConstraints.FreezeRotation;
         player.AddForce(Vector3.ClampMagnitude(force, 650));
-        AnimateJump(true);
+
+        if (force.x > 0) {
+            transform.eulerAngles = new Vector3(
+                transform.eulerAngles.x,
+                90,
+                transform.eulerAngles.z
+            );
+        } else {
+            transform.eulerAngles = new Vector3(
+                transform.eulerAngles.x,
+                -90,
+                transform.eulerAngles.z
+            );
+        }
+
+        SetJumpAnimation(true);
     }
 
     private void OnTriggerEnter(Collider collider) {
         if (player.velocity.y > Mathf.Epsilon ||
-        collider.gameObject.tag != "Platform") { return; }
+            collider.gameObject.tag != "Platform") { return; }
         Land(collider);
     }
 
@@ -76,11 +105,11 @@ public class PlayerScript : MonoBehaviour {
         player.constraints = RigidbodyConstraints.FreezeAll;
         player.velocity = Vector3.zero;
         transform.SetParent(collider.transform);
-        AnimateJump(false);
+        SetJumpAnimation(false);
     }
 
-    private void AnimateJump(bool newState) {
-        isGrounded = !newState;
-        animator.SetBool("Grounded", !newState);
+    private void SetJumpAnimation(bool isJumping) {
+        isGrounded = !isJumping;
+        animator.SetBool("Grounded", !isJumping);
     }
 }
