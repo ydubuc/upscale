@@ -43,10 +43,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c89f29648d988e44dabf22b27b5e050a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 0}
   platformPrefab: {fileID: 1906983612231220637, guid: 44c53a84996135c41a4e8d7dbfed5886,
     type: 3}
-  genesisPlatformPrefab: {fileID: 3807601451244318185, guid: 27ceb9d52f676c1408f455b4aa85ccab,
-    type: 3}
-  spawnHeight: 15
-  minSpawnRate: 3
-  maxSpawnRate: 5
+  tower1: {fileID: 0}
+  tower2: {fileID: 0}
+  platformSpeed: 1.5
