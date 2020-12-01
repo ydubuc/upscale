@@ -7,11 +7,17 @@ public class PlayerScript : MonoBehaviour {
     // dependencies
     [SerializeField] private Rigidbody player = default;
 
+    [Header("Audio Sources")]
+	[SerializeField] AudioClip audioClipJump;
+    [SerializeField] AudioClip audioClipLand;
+	[SerializeField] AudioClip audioClipDead;
+
     // lateinit dependencies
     private Animator animator;
+    private AudioSource audioSource;
     
     // constants
-    private float deactivationPos = 25f;
+    private float deactivationPos = 30f;
 
     // runtime variables
     private Vector3 touchOrigin;
@@ -23,6 +29,7 @@ public class PlayerScript : MonoBehaviour {
     void Awake() {
         animator = GetComponent<Animator>();
         animator.SetBool("Grounded", true);
+        audioSource = GetComponent<AudioSource>();
     }
 
     void Update() {
@@ -35,9 +42,16 @@ public class PlayerScript : MonoBehaviour {
             highestPos = transform.position.y;
         }
         if (transform.position.y < highestPos - deactivationPos) {
-            gameObject.SetActive(false);
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            // gameObject.SetActive(false);
+            player.constraints = RigidbodyConstraints.FreezeAll;
+            audioSource.PlayOneShot(audioClipDead);
+            ShowDeathPanel();
         }
+    }
+
+    private void ShowDeathPanel() {
+        // TODO:
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     private void RespondToInputs() {
@@ -92,6 +106,7 @@ public class PlayerScript : MonoBehaviour {
             );
         }
 
+        audioSource.PlayOneShot(audioClipJump);
         SetJumpAnimation(true);
     }
 
@@ -105,6 +120,7 @@ public class PlayerScript : MonoBehaviour {
         player.constraints = RigidbodyConstraints.FreezeAll;
         player.velocity = Vector3.zero;
         transform.SetParent(collider.transform);
+        audioSource.PlayOneShot(audioClipLand);
         SetJumpAnimation(false);
     }
 

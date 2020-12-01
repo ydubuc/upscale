@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour {
     // constants
     private float spawnRate = 1f;
     private float minSpawnHeightDiff = 4f;
-    private float maxSpawnHeightDiff = 6f;
+    private float maxSpawnHeightDiff = 7f;
 
     // injected variables
     [SerializeField] float platformSpeed = 1.5f;
