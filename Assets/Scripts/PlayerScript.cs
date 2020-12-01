@@ -1,11 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PlayerScript : MonoBehaviour {
     // dependencies
     [SerializeField] private Rigidbody player = default;
+    [SerializeField] GameObject deathPanel = default;
 
     [Header("Audio Sources")]
 	[SerializeField] AudioClip audioClipJump;
@@ -20,6 +21,7 @@ public class PlayerScript : MonoBehaviour {
     private float deactivationPos = 30f;
 
     // runtime variables
+    private bool alive = true;
     private Vector3 touchOrigin;
     private Vector3 touchEnd;
     private float highestPos = 0f;
@@ -41,8 +43,8 @@ public class PlayerScript : MonoBehaviour {
         if (transform.position.y > highestPos) {
             highestPos = transform.position.y;
         }
-        if (transform.position.y < highestPos - deactivationPos) {
-            // gameObject.SetActive(false);
+        if (transform.position.y < highestPos - deactivationPos && alive) {
+            alive = false;
             player.constraints = RigidbodyConstraints.FreezeAll;
             audioSource.PlayOneShot(audioClipDead);
             ShowDeathPanel();
@@ -50,12 +52,11 @@ public class PlayerScript : MonoBehaviour {
     }
 
     private void ShowDeathPanel() {
-        // TODO:
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        deathPanel.SetActive(true);
     }
 
     private void RespondToInputs() {
-        // if (!isGrounded) { return; }
+        if (!isGrounded || !alive) { return; }
 #if UNITY_IOS || UNITY_ANDROID
         RespondToMobileInput();
 #elif UNITY_STANDALONE

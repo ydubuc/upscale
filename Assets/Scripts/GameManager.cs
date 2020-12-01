@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
     // dependencies
@@ -83,5 +84,9 @@ public class GameManager : MonoBehaviour {
     private Vector3 RandomPlatformPosition() {
         spawnHeight += Random.Range(minSpawnHeightDiff, maxSpawnHeightDiff);
         return new Vector3(Random.Range(-3.75f, 3.75f), spawnHeight, 0f);
+    }
+
+    public void RestartScene() {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }
