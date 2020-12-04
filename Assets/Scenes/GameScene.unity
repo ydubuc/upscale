@@ -507,9 +507,9 @@ Camera:
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
-  m_SensorSize: {x: 36, y: 24}
+  m_SensorSize: {x: 7.9, y: 24}
   m_LensShift: {x: 0, y: 0}
-  m_FocalLength: 50
+  m_FocalLength: 8.402491
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
@@ -518,7 +518,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 100
+  field of view: 106
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -647,6 +647,16 @@ PrefabInstance:
     - target: {fileID: 54084939265967506, guid: 0e74cf81e6fd82546b4797f71ceffb81,
         type: 3}
       propertyPath: m_Interpolate
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 54084939265967506, guid: 0e74cf81e6fd82546b4797f71ceffb81,
+        type: 3}
+      propertyPath: m_IsKinematic
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 54084939265967506, guid: 0e74cf81e6fd82546b4797f71ceffb81,
+        type: 3}
+      propertyPath: m_UseGravity
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 136606663363984694, guid: 0e74cf81e6fd82546b4797f71ceffb81,

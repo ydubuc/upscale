@@ -88,10 +88,11 @@ public class PlayerScript : MonoBehaviour {
 
     private void Jump(Vector3 force) {
         if (force.y < 0f || force.magnitude < 50) { return; }
+        // TODO: // if (force.magnitude < 300) { force.magnitude = 300; }
         transform.parent = null;
         player.constraints = RigidbodyConstraints.None;
         player.constraints = RigidbodyConstraints.FreezeRotation;
-        player.AddForce(Vector3.ClampMagnitude(force, 650));
+        player.AddForce(Vector3.ClampMagnitude(force, 700));
         transform.eulerAngles = new Vector3(
             transform.eulerAngles.x,
             (force.x > 0) ? 90f : -90f,
