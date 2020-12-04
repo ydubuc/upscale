@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 374908597947625032}
   - component: {fileID: 374908597947625033}
   m_Layer: 0
-  m_Name: Game Manager
+  m_Name: GameManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -48,4 +48,4 @@ MonoBehaviour:
     type: 3}
   tower1: {fileID: 0}
   tower2: {fileID: 0}
-  platformSpeed: 1.5
+  platformSpeed: 1

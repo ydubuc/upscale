@@ -16,7 +16,7 @@ public class PlayerScript : MonoBehaviour {
     // lateinit dependencies
     private Animator animator;
     private AudioSource audioSource;
-    
+
     // constants
     private float deactivationPos = 30f;
 
