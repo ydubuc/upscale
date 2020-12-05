@@ -32,7 +32,8 @@ public class CameraBehavior : MonoBehaviour {
 
 	private Vector3 TargetPos() {
 		Vector3 targetPos = player.position + offset;
-		targetPos.x = 0f;
+		// targetPos.x = 0f;
+		targetPos.x = targetPos.x / 8;
 		return targetPos;
 	}
 }
